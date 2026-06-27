@@ -10,6 +10,7 @@ jobs:
     name: Build ${{ matrix.platform }}
     runs-on: ${{ matrix.runner }}
     strategy:
+      fail-fast: false
       matrix:
         include:
           - platform: linux
@@ -44,6 +45,13 @@ jobs:
         with:
           flutter-version: '3.16.0'
           channel: 'stable'
+
+      - name: Setup Java (Android)
+        if: matrix.platform == 'android'
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
       - name: Get dependencies
         run: flutter pub get
